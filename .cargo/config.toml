@@ -1,0 +1,40 @@
+# Configuration for Cargo to override default build settings for specific target platforms.
+# The `[target.<platform>]` sections allow specifying custom build options (e.g., linking and flags).
+
+# ----------------------------------------
+# Target: x86_64-unknown-linux-gnu (64-bit Linux)
+# ----------------------------------------
+[target.x86_64-unknown-linux-gnu]
+# Use Clang as the linker instead of the default gcc linker.
+# Passes the `-fuse-ld=lld` argument to Clang, which instructs it to use the LLVM linker (lld).
+rustflags = ["-C", "linker=clang", "-C", "link-arg=-fuse-ld=lld"]
+
+# ----------------------------------------
+# Target: x86_64-pc-windows-msvc (64-bit Windows with MSVC toolchain)
+# ----------------------------------------
+[target.x86_64-pc-windows-msvc]
+# Use the LLVM linker (lld) for linking, which is faster and more modern compared to MSVC's default linker.
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+# ----------------------------------------
+# Target: x86_64-pc-windows-gnu (64-bit Windows with GNU toolchain)
+# ----------------------------------------
+[target.x86_64-pc-windows-gnu]
+# Similar to MSVC, but specific to the GNU toolchain.
+# Passes the `-fuse-ld=lld` argument to the toolchain, ensuring the use of the lld linker.
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+# ----------------------------------------
+# Target: x86_64-apple-darwin (64-bit macOS for Intel-based Macs)
+# ----------------------------------------
+[target.x86_64-apple-darwin]
+# Pass the `-fuse-ld=lld` argument to use the LLVM linker on x86-based macOS systems (Intel Macs).
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+# ----------------------------------------
+# Target: aarch64-apple-darwin (64-bit macOS for Apple Silicon/ARM-based Macs)
+# ----------------------------------------
+[target.aarch64-apple-darwin]
+# Explicitly specify the path to the `ld64.lld` linker from Homebrew-installed LLVM tools.
+# Ensures compatibility and performance when building for Apple Silicon machines.
+rustflags = ["-C", "link-arg=-fuse-ld=/opt/homebrew/opt/llvm/bin/ld64.lld"]
