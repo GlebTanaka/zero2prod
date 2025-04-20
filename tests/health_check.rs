@@ -1,5 +1,5 @@
-use zero2prod::run;
 use std::net::TcpListener;
+use zero2prod::run;
 
 // Launch application in the background
 fn spawn_app() -> String {
@@ -17,7 +17,7 @@ async fn health_check_works() {
     // arrange
     let address = spawn_app();
     let client = reqwest::Client::new();
-    
+
     // act
     let response = client
         // use the address returned by the application
@@ -25,7 +25,7 @@ async fn health_check_works() {
         .send()
         .await
         .expect("Failed to send request");
-    
+
     // assert
     assert!(response.status().is_success());
     assert_eq!(Some(0), response.content_length());
